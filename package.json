@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/Figgypop/tinyapp/issues"
   },
-  "homepage": "https://github.com/Figgypop/tinyapp#readme"
+  "homepage": "https://github.com/Figgypop/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
