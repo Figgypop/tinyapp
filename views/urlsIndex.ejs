@@ -32,9 +32,12 @@
             <tr>
               <td> <a href="<%= urls[id] %>"><%= id %></a></td>
               <td><%= urls[id] %></td>
+              <td> <form method="GET" action="/urls/<%= id %>">
+                <button type="submit" onclick="alert('Edit URL?')">Edit</button>
+              </form> </td>
               <td> <form method="POST" action="/urls/<%= id %>/delete">
                 <button type="submit" onclick="alert('Delete URL?')">Delete</button>
-              </form>
+              </form> </td>
             </tr>
           <% } %>
         </tbody>
