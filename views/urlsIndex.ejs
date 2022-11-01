@@ -32,6 +32,9 @@
             <tr>
               <td> <a href="<%= urls[id] %>"><%= id %></a></td>
               <td><%= urls[id] %></td>
+              <td> <form method="POST" action="/urls/<%= id %>/delete">
+                <button type="submit" onclick="alert('Delete URL?')">Delete</button>
+              </form>
             </tr>
           <% } %>
         </tbody>
