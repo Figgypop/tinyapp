@@ -50,7 +50,7 @@ app.post("/urls", (req, res) => {
     const shortURL = generateRandomString();
     urlDatabase[shortURL] = longURL
     console.log(urlDatabase);
-    res.send("OK");
+    res.redirect(`/urls/${shortURL}`);
 });
 
 app.get("/urls/:id", (req, res) => {
@@ -58,6 +58,12 @@ app.get("/urls/:id", (req, res) => {
   const longURL = urlDatabase[id]
   const templateVars = {id, longURL};
   res.render("urlsShow", templateVars)
+});
+
+app.get("/u/:id", (req, res) => {
+  const id = req.params.id
+  const longURL = urlDatabase[id]
+res.redirect(longURL)
 });
 
 app.listen(PORT, () => {
