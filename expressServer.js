@@ -1,10 +1,12 @@
 const express = require("express");
 
+const bcrypt = require("bcryptjs");
+
+const cookieParser = require('cookie-parser')
+
 const app = express();
 
 const PORT = 8080; //deafult port 8080
-
-const cookieParser = require('cookie-parser')
 
 app.set("view engine", "ejs");
 
@@ -18,6 +20,8 @@ const userLookUp = function (email) {
   }
   return null
 };
+
+
 
 
 const urlDatabase = {
@@ -121,16 +125,17 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
   const email = req.body.email
   const password = req.body.password
-  const user = userLookUp(email)
-  if (email === "" || password === "") {
+  const user = userLookUp(email) 
+   if (email === "" || password === "") {
     return res.status(400).send("Please fill in the email or password")
   }
   if (!user) {
     return res.status(403).send("User does not exist")
   }
-  if (password !== user.password) {
+  if (!bcrypt.compareSync(password, user.password)) { // first arg is what the user typed, the second is the hashed password in the object taht belongs to that user
     return res.status(403).send("Password does not Match")
   }
+  console.log(user)
   res.cookie("user_id", user.id);
   res.redirect("/urls")
 });
@@ -144,7 +149,7 @@ app.post("/logout", (req, res) => {
 
 app.get("/register", (req, res) => {
   const user_id = req.cookies["user_id"]
-  if (!user_id) {
+  if (user_id) {
     res.redirect("/urls")
   } else {
     res.render("urlRegistration")
@@ -156,6 +161,7 @@ app.post("/register", (req, res) => {
   const email = req.body.email
   const id = generateRandomString();
   const password = req.body.password
+  const hashedPassword = bcrypt.hashSync(password, 10);
   if (email === "" || password === "") {
     return res.status(400).send("Please fill in the email or password")
   }
@@ -164,7 +170,7 @@ app.post("/register", (req, res) => {
     return res.status(400).send("User with that email already exists")
   }
 
-  users[id] = { id, email, password }
+  users[id] = { id, email, password: hashedPassword }
 
   res.cookie("user_id", id)
   res.redirect("/urls")
@@ -230,7 +236,7 @@ app.post("/urls/:id/delete", (req, res) => {
   if (!urlBelongsToUser) {
     return res.status(403).send("You do not have access to this URL")
   }
-  
+
   const id = req.params.id
   delete urlDatabase[id].longURL
   res.redirect("/urls/")
