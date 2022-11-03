@@ -87,7 +87,10 @@ app.post("/login", (req, res) => {
     return res.status(400).send("Please fill in the email or password")
   } 
   if(!user) {
-  return res.status(404).send("User does not exist")
+  return res.status(403).send("User does not exist")
+  }
+  if(password !== user.password) {
+    return res.status(403).send("Password does not Match")
   }
   res.cookie("user_id", user.id);
   res.redirect("/urls")
@@ -95,7 +98,7 @@ app.post("/login", (req, res) => {
 
 app.post("/logout", (req, res) => {
   res.clearCookie("user_id");
-  res.redirect("/register")
+  res.redirect("/Login")
 });
 
 
