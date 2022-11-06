@@ -51,7 +51,7 @@ app.use(cookieSession({
   name: 'session',
   keys: ["Random String"],
 
-  maxAge: 24 * 60 * 60 * 1000
+  maxAge: 24 * 60 * 60 * 1000 
 }))
 
 app.use(express.urlencoded({ extended: true }));
@@ -106,7 +106,7 @@ app.get("/urls/new", (req, res) => {
   const user_id = req.session.user_id;
   let user = users[user_id];
   const templateVars = { user };
-
+  
   if (!user_id) {
     res.redirect("/Login");
   } else {
@@ -120,11 +120,11 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/login", (req, res) => {
   const user_id = req.session.user_id;
-  const templateVars = { user: user_id }
+
   if (user_id) {
     res.redirect("/urls");
   } else {
-    res.render("urlLogin", templateVars);
+    res.render("urlLogin");
   }
 
 });
@@ -159,11 +159,11 @@ app.post("/logout", (req, res) => {
 
 app.get("/register", (req, res) => {
   const user_id = req.session.user_id;
-  const templateVars = { user: user_id }
+
   if (user_id) {
     res.redirect("/urls");
   } else {
-    res.render("urlRegistration", templateVars);
+    res.render("urlRegistration");
   }
 
 });
@@ -201,7 +201,7 @@ function generateRandomString() {
 
   return result;
 };
-
+ 
 
 app.post("/urls", (req, res) => {
   const user_id = req.session.user_id;
@@ -222,10 +222,6 @@ app.get("/urls/:id", (req, res) => {
   const user_id = req.session.user_id;
   const user = users[user_id];
 
-  if (urlDatabase[id].userID !== user_id) {
-    return res.send("You do not have access to this URL");
-  } 
-
   if (!user_id) {
     return res.send("😛😛Login FOOL! 😛😛")
   }
@@ -233,7 +229,7 @@ app.get("/urls/:id", (req, res) => {
   if (!urlObj) {
     return res.send("That ShortURL does not exist");
   }
-
+  
   const longURL = urlDatabase[id].longURL;
   const templateVars = { id, longURL, user };
   res.render("urlsShow", templateVars);

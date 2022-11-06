@@ -6,5 +6,6 @@ const userLookUp = function (email, database) {
   }
   return null
 };
+ 
 
 module.exports = userLookUp;

@@ -7,8 +7,9 @@
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous" />
   <title>Authentication Server</title>
 </head>
-
+ 
 <body>
+  <%- include('partials/_header') %>
  <form action="/login" method="POST">
   <label for="email">Email</label>
   <input id="email" type="text" name="email">
